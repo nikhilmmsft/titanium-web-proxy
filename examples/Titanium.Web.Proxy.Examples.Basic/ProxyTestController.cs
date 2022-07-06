@@ -15,6 +15,8 @@ using Titanium.Web.Proxy.StreamExtended.Network;
 
 namespace Titanium.Web.Proxy.Examples.Basic
 {
+    using System.IO;
+
     public class ProxyTestController : IDisposable
     {
         private readonly ProxyServer proxyServer;
@@ -24,6 +26,8 @@ namespace Titanium.Web.Proxy.Examples.Basic
         private CancellationToken cancellationToken => cancellationTokenSource.Token;
         private ConcurrentQueue<Tuple<ConsoleColor?, string>> consoleMessageQueue
             = new ConcurrentQueue<Tuple<ConsoleColor?, string>>();
+
+        private StreamWriter fileWriter = new StreamWriter(@"C:\proxy.log");
 
         public ProxyTestController()
         {
@@ -137,7 +141,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
             //proxyServer.SetAsSystemHttpsProxy(explicitEndPoint);
             if (RunTime.IsWindows)
             {
-                proxyServer.SetAsSystemProxy(explicitEndPoint, ProxyProtocolType.AllHttp);
+                //proxyServer.SetAsSystemProxy(explicitEndPoint, ProxyProtocolType.AllHttp);
             }
         }
 
@@ -193,7 +197,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
         {
             string hostname = e.HttpClient.Request.RequestUri.Host;
             e.GetState().PipelineInfo.AppendLine(nameof(onBeforeTunnelConnectRequest) + ":" + hostname);
-            writeToConsole("Tunnel to: " + hostname);
+            writeToConsole("\nTunnel to: " + hostname);
 
             var clientLocalIp = e.ClientLocalEndPoint.Address;
             if (!clientLocalIp.Equals(IPAddress.Loopback) && !clientLocalIp.Equals(IPAddress.IPv6Loopback))
@@ -380,16 +384,17 @@ namespace Titanium.Web.Proxy.Examples.Basic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public Task OnCertificateValidation(object sender, CertificateValidationEventArgs e)
+        public Task OnCertificateValidation(object sender, CertificateValidationEventArgs  e)
         {
             e.GetState().PipelineInfo.AppendLine(nameof(OnCertificateValidation));
 
             // set IsValid to true/false based on Certificate Errors
-            if (e.SslPolicyErrors == SslPolicyErrors.None)
-            {
-                e.IsValid = true;
-            }
+            //if (e.SslPolicyErrors == SslPolicyErrors.None)
+            //{
+            //    //e.IsValid = true;
+            //}
 
+            e.IsValid = true;
             return Task.CompletedTask;
         }
 
@@ -426,10 +431,12 @@ namespace Titanium.Web.Proxy.Examples.Basic
                         ConsoleColor existing = Console.ForegroundColor;
                         Console.ForegroundColor = consoleColor.Value;
                         Console.WriteLine(message);
+                        await this.fileWriter.WriteAsync(message);
                         Console.ForegroundColor = existing;
                     }
                     else
                     {
+                        await this.fileWriter.WriteAsync(message);
                         Console.WriteLine(message);
                     }
                 }

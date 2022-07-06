@@ -318,7 +318,7 @@ namespace Titanium.Web.Proxy
                 {
                     // todo
                     string? httpCmd = await clientStream.ReadLineAsync(cancellationToken);
-                    if (httpCmd == "PRI * HTTP/2.0")
+                    if (httpCmd == "PRI * HTTP/2.0")    
                     {
                         connectArgs.HttpClient.ConnectRequest!.TunnelType = TunnelType.Http2;
 
