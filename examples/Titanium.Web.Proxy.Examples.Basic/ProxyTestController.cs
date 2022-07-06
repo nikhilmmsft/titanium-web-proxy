@@ -389,12 +389,11 @@ namespace Titanium.Web.Proxy.Examples.Basic
             e.GetState().PipelineInfo.AppendLine(nameof(OnCertificateValidation));
 
             // set IsValid to true/false based on Certificate Errors
-            //if (e.SslPolicyErrors == SslPolicyErrors.None)
-            //{
-            //    //e.IsValid = true;
-            //}
+            if (e.SslPolicyErrors == SslPolicyErrors.None)
+            {
+                e.IsValid = true;            
+            }
 
-            e.IsValid = true;
             return Task.CompletedTask;
         }
 
