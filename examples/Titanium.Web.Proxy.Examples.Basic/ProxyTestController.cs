@@ -197,7 +197,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
         {
             string hostname = e.HttpClient.Request.RequestUri.Host;
             e.GetState().PipelineInfo.AppendLine(nameof(onBeforeTunnelConnectRequest) + ":" + hostname);
-            writeToConsole("\nTunnel to: " + hostname);
+            writeToConsole("\nTunnel to: " + e.HttpClient.Request.RequestUri.AbsoluteUri + "\n");
 
             var clientLocalIp = e.ClientLocalEndPoint.Address;
             if (!clientLocalIp.Equals(IPAddress.Loopback) && !clientLocalIp.Equals(IPAddress.IPv6Loopback))
