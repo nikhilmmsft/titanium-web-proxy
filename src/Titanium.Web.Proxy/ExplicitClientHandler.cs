@@ -219,6 +219,7 @@ namespace Titanium.Web.Proxy
                         }
                         catch (Exception e)
                         {
+                            Console.WriteLine($"Message : {e.Message} \n Stack: {e.StackTrace}");
                             sslStream?.Dispose();
 
                             var certName = certificate?.GetNameInfo(X509NameType.SimpleName, false);

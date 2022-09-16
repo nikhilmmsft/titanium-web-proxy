@@ -243,7 +243,7 @@ namespace Titanium.Web.Proxy
         ///     List of supported Ssl versions.
         /// </summary>
 #pragma warning disable 618
-        public SslProtocols SupportedSslProtocols { get; set; } = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
+        public SslProtocols SupportedSslProtocols { get; set; } = /*SslProtocols.Ssl2 | SslProtocols.Ssl3 | */SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
 #pragma warning restore 618
 
         /// <summary>

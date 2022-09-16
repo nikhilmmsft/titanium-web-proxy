@@ -159,6 +159,12 @@ namespace Titanium.Web.Proxy.Helpers
                 }
 
                 string rootDomain = hostname.Substring(idx + 1);
+
+                //if (rootDomain.Equals("microsoft.com"))
+                //{
+                //    return "www.microsoft.com";
+                //}
+
                 return "*." + rootDomain;
             }
 

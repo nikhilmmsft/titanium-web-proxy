@@ -341,7 +341,7 @@ namespace Titanium.Web.Proxy.Network
             {
                 onException(
                     new Exception("Failed to make system trust root certificate "
-                                  + $" for {storeName}\\{storeLocation} store location. You may need admin rights.",
+                                  + $" for {storeLocation}\\{storeName} store location. You may need admin rights. Error Name {e.GetType()} \nError message {e.Message}",
                         e));
             }
             finally

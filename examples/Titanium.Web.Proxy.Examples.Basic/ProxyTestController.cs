@@ -89,7 +89,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
 
             //proxyServer.EnableWinAuth = true;
 
-            explicitEndPoint = new ExplicitProxyEndPoint(IPAddress.Any, 8000);
+            explicitEndPoint = new ExplicitProxyEndPoint(IPAddress.Any, 8000, decryptSsl: false);
 
             // Fired when a CONNECT request is received
             explicitEndPoint.BeforeTunnelConnectRequest += onBeforeTunnelConnectRequest;

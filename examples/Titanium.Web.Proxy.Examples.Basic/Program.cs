@@ -4,6 +4,8 @@ using Titanium.Web.Proxy.Helpers;
 
 namespace Titanium.Web.Proxy.Examples.Basic
 {
+    using System.Net;
+
     public class Program
     {
         private static readonly ProxyTestController controller = new ProxyTestController();
@@ -16,6 +18,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
                 // fix console hang due to QuickEdit mode
                 ConsoleHelper.DisableQuickEditMode();
             }
+
 
             // Start proxy controller
             controller.StartProxy();
