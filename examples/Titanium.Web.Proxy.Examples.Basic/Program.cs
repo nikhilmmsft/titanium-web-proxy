@@ -19,9 +19,24 @@ namespace Titanium.Web.Proxy.Examples.Basic
                 ConsoleHelper.DisableQuickEditMode();
             }
 
+            int numArgs = args.Length;
+            if (numArgs == 0)
+            {
+                // Start proxy controller
+                controller.StartProxy();
+            }
+            else if (numArgs == 1)
+            {
+                // assume 3
+                // Start proxy controller
+                controller.StartProxy(args[0]);
+            }
+            else
+            {
+                controller.StartProxy(args[0], args[1], args[2]);
+            }
 
-            // Start proxy controller
-            controller.StartProxy();
+           
 
             Console.WriteLine("Hit any key to exit..");
             Console.WriteLine();

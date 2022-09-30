@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Titanium.Web.Proxy.Examples.Basic": {
+      "commandName": "Executable",
+      "executablePath": "D:\\dev\\github\\titanium-web-proxy\\examples\\Titanium.Web.Proxy.Examples.Basic\\bin\\Debug\\net48\\Titanium.Web.Proxy.Examples.Basic.exe",
+      "commandLineArgs": "8000 10.30.78.118 9300"
+    }
+  }
+}

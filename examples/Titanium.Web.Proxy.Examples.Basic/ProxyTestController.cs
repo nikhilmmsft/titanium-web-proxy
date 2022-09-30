@@ -16,6 +16,7 @@ using Titanium.Web.Proxy.StreamExtended.Network;
 namespace Titanium.Web.Proxy.Examples.Basic
 {
     using System.IO;
+    using Org.BouncyCastle.Utilities;
 
     public class ProxyTestController : IDisposable
     {
@@ -27,7 +28,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
         private ConcurrentQueue<Tuple<ConsoleColor?, string>> consoleMessageQueue
             = new ConcurrentQueue<Tuple<ConsoleColor?, string>>();
 
-        private StreamWriter fileWriter = new StreamWriter(@"C:\proxy.log");
+        //private StreamWriter fileWriter = new StreamWriter($"C:\\proxy.log");
 
         public ProxyTestController()
         {
@@ -78,7 +79,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
             //proxyServer.CertificateManager.RootCertificate = new X509Certificate2("myCert.pfx", string.Empty, X509KeyStorageFlags.Exportable);
         }
 
-        public void StartProxy()
+        public void StartProxy(string proxyPort = "8000", string upStreamProxyIp = null, string upStreamProxyPort = null)
         {
             proxyServer.BeforeRequest += onRequest;
             proxyServer.BeforeResponse += onResponse;
@@ -89,7 +90,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
 
             //proxyServer.EnableWinAuth = true;
 
-            explicitEndPoint = new ExplicitProxyEndPoint(IPAddress.Any, 8000, decryptSsl: false);
+            explicitEndPoint = new ExplicitProxyEndPoint(IPAddress.Any, int.Parse(proxyPort), decryptSsl: false);
 
             // Fired when a CONNECT request is received
             explicitEndPoint.BeforeTunnelConnectRequest += onBeforeTunnelConnectRequest;
@@ -111,8 +112,13 @@ namespace Titanium.Web.Proxy.Examples.Basic
             //};
 
             //proxyServer.AddEndPoint(transparentEndPoint);
-            //proxyServer.UpStreamHttpProxy = new ExternalProxy("localhost", 8888);
-            //proxyServer.UpStreamHttpsProxy = new ExternalProxy("localhost", 8888);
+            if (!string.IsNullOrEmpty(upStreamProxyIp) && !string.IsNullOrEmpty(upStreamProxyPort))
+            {
+                int port = int.Parse(upStreamProxyPort);
+                proxyServer.UpStreamHttpProxy = new ExternalProxy(upStreamProxyIp, port);
+                proxyServer.UpStreamHttpsProxy = new ExternalProxy(upStreamProxyIp, port);
+            }
+            
 
             // SOCKS proxy
             //proxyServer.UpStreamHttpProxy = new ExternalProxy("127.0.0.1", 1080)
@@ -198,6 +204,7 @@ namespace Titanium.Web.Proxy.Examples.Basic
             string hostname = e.HttpClient.Request.RequestUri.Host;
             e.GetState().PipelineInfo.AppendLine(nameof(onBeforeTunnelConnectRequest) + ":" + hostname);
             writeToConsole("\nTunnel to: " + e.HttpClient.Request.RequestUri.AbsoluteUri + "\n");
+            writeToConsole($"\nHost Header : {e.HttpClient.Request.Host }\n\n");
 
             var clientLocalIp = e.ClientLocalEndPoint.Address;
             if (!clientLocalIp.Equals(IPAddress.Loopback) && !clientLocalIp.Equals(IPAddress.IPv6Loopback))
@@ -430,12 +437,12 @@ namespace Titanium.Web.Proxy.Examples.Basic
                         ConsoleColor existing = Console.ForegroundColor;
                         Console.ForegroundColor = consoleColor.Value;
                         Console.WriteLine(message);
-                        await this.fileWriter.WriteAsync(message);
+                        //await this.fileWriter.WriteAsync(message);
                         Console.ForegroundColor = existing;
                     }
                     else
                     {
-                        await this.fileWriter.WriteAsync(message);
+                        //await this.fileWriter.WriteAsync(message);
                         Console.WriteLine(message);
                     }
                 }
