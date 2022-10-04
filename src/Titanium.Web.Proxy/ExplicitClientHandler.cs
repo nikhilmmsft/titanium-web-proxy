@@ -125,6 +125,7 @@ namespace Titanium.Web.Proxy
                         connectRequest.ClientHelloInfo = clientHelloInfo;
                     }
 
+                    Console.WriteLine($"\nThe SNI hostname is {clientHelloInfo.GetServerName()}");
                     await endPoint.InvokeBeforeTunnelConnectResponse(this, connectArgs, ExceptionFunc, isClientHello);
 
                     if (decryptSsl && clientHelloInfo != null)
