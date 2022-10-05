@@ -402,7 +402,7 @@ retry:
 
                         if (upStreamEndPoint != null)
                         {
-                            tcpServerSocket.Bind(upStreamEndPoint);
+                           // tcpServerSocket.Bind(upStreamEndPoint);
                         }
 
                         tcpServerSocket.NoDelay = proxyServer.NoDelay;
@@ -845,6 +845,7 @@ retry:
             static IAsyncResult beginConnect(IPAddress address, int port, AsyncCallback requestCallback,
                 object state)
             {
+
                 return ((Socket)state).BeginConnect(address, port, requestCallback, state);
             }
 
@@ -855,7 +856,9 @@ retry:
 
             public static Task CreateTask(Socket socket, IPAddress ipAddress, int port)
             {
-                return Task.Factory.FromAsync(beginConnect, endConnect, ipAddress, port, state: socket);
+                socket.Connect(ipAddress, port);
+                return Task.CompletedTask;
+                //return Task.Factory.FromAsync(beginConnect, endConnect, ipAddress, port, state: socket);
             }
         }
 
